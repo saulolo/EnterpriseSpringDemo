@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 programando para la web con spring boot debo de utilizar las anotaciones qne me provee dicho
 framework para que entienda que dicha clase se va a comunicar con la BD a travez de @Entity.*/
 @Entity
-@Table(name = "Empresa") //[8].Con esta anotación la BD a traves de Hibernate se da cuenta que esta entidad va enlazada a una tabla.
+@Table(name = "empresa") //[8].Con esta anotación la BD a traves de Hibernate se da cuenta que esta entidad va enlazada a una tabla.
 public class Empresa {
 
     //[9].Creó los atributos de la clase.
