@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> <!--[26.Ctrll.H].Con la etiqueta xmlns:th indico voy a utilizar
+el atributo "th" de Thymeleaf, que es el motor de plantillas para aplicaciones web en Java con fucnionalidades proporcionadas
+por thymeleaf la cual inyecte como dependencia o motor a trabajar.-->
+<head>
+    <title>Lista de Empresas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .container-fluid {
+            padding-top: 70px;
+            padding-bottom: 70px;
+        }
+        .bg-1 {
+            background-color: #1abc9c; /* Green */
+            color: #ffffff;
+
+        .bg-3 {
+            background-color: #ffffff; /* White */
+            color: #555555;
+        }
+        }
+
+    </style>
+</head>
+<body>
+<!--[26.Ctrll.G].Voy a utilizar los recursos que me proporciona Boostrap 3
+link: https://www.w3schools.com/bootstrap/bootstrap_theme_me.asp -->
+
+<!-- Personalizando El contenedor del Titulo -->
+<div class="container-fluid bg-1 text-center">
+    <br>
+    <img src="/images/logoEmpresa.jpg" class="img-circle" alt="logoEmpresa">
+</div>
+
+<!-- El contenedor para la Tabla -->
+<div class="container-fluid bg-3 text-center">
+    <div class="table-responsive">
+        <h2>Lista de Empresas</h2>
+        <!--Dibujo de la tabla-->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Telefono</th>
+                    <th>NIT</th>
+                    <th>Editar</th> <!--Boton-->
+                    <th>Eliminar</th> <!--Boton-->
+                </tr>
+            </thead>
+
+            <!--Llenado de la tabla-->
+            <!--[26.Ctrll.I].Hago una iteración la cual creo una variable llamada empresa que va a almacenar
+            el modelo con el atributo llamado emplist ddonde esta guardada la lista de todas
+            las empresas que cree en el método viewEmpresas.-->
+            <tr th:each="empresa : ${emplist}"> <!--${} Indica que viene de otro recurso externo.-->
+                <td th:text="${empresa.id}"></td> <!--Lleno las filas con los nombres correspondientes a,los atributos de mi clase Empresa-->
+                <td th:text="${empresa.nombre}"></td>
+                <td th:text="${empresa.direccion}"></td>
+                <td th:text="${empresa.telefono}"></td>
+                <td th:text="${empresa.NIT}"></td>
+                <td><button type="button" class="btn btn-warning"><a th:href="@{/editarEmpresa}">Editar</a></button></td>
+                <td><button type="button" class="btn btn-danger"><a th:href="@{/eliminarEmpresa}">Eliminar</a></button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

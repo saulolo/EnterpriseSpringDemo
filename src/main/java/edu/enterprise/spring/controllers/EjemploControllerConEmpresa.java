@@ -27,7 +27,8 @@ public class EjemploControllerConEmpresa {
 
     /* VER EMPRESAS */
     //[26.Ctrll.D].Creo el metodo viewEmpresas que me va a permitir ver todas las empresas listadas.
-    @GetMapping({"/Empresas", "/VerEmpresas"}) //Esta anotación @GetMapping indica que este método manejará solicitudes GET a las URL "/Empresas" o "/VerEmpresas", esta anotación permite definir múltiples rutas.
+    //({"/Empresas", "/VerEmpresas"}) //"/Empresas", es la otra URL que podia direccionar este coontrolador.
+    @GetMapping({"/", "/VerEmpresas"}) //Esta anotación @GetMapping indica que este método manejará solicitudes GET a las URL "/" (que es el home) o "/VerEmpresas", esta anotación permite definir múltiples rutas.
     public String viewEmpresas(Model model) { //El objeto model de la clase Model es que recibe cualquier cosa, y aparte de que la recibo como argumento, la puedo modelar dentro del método y devuelvo algo.
         //El objeto Model se utiliza para pasar datos desde el controlador a la vista. Es un objeto proporcionado por el framework que permite agregar atributos que se mostrarán en la vista.
         List<Empresa> listaEmpresas = empresaService.getAllEmpresas(); // Creo una variable llamada listaEmpresas de tipo List<Empresa> que va a ser igual al metodo que creé en EmpresaService que me devuelve todas las empresas (getAllEmpresas()).
@@ -39,6 +40,11 @@ public class EjemploControllerConEmpresa {
     /* Nota: El uso del objeto Model permite que el controlador y la vista estén desacoplados. El controlador no necesita conocer los detalles de cómo se representan los datos en la vista.
         Esto hace que el código sea más mantenible y flexible, ya que podemos cambiar la vista sin afectar el controlador y viceversa.*/
 
+    /*[26.Ctrll.E].Voy al package templates y creo un archivo html con el nombre tal cual del return
+    en este caso verEmpresas en el cual voy a crear la plantilla estetica donde mostraré lo que me
+    retorna este controlador de viewEmpresas.*/
+    //[26.Ctrll.F]. Para que la vista en html sea posible, debo de inyectar la dependecia Thymelief en el archivo pom.xml.
 
-    
+
+
 }
