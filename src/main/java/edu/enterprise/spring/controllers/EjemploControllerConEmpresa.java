@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -44,6 +46,36 @@ public class EjemploControllerConEmpresa {
     en este caso verEmpresas en el cual voy a crear la plantilla estetica donde mostraré lo que me
     retorna este controlador de viewEmpresas.*/
     //[26.Ctrll.F]. Para que la vista en html sea posible, debo de inyectar la dependecia Thymelief en el archivo pom.xml.
+
+
+    /* AGREGAR EMPRESAS */
+    //[26.Ctrll.K].Creó el servicio que me guarde la empresa.
+    @GetMapping("/AgregarEmpresa")
+    public String nuevaEmpresa(Model model) { //Devuelve un String porque llama el nombre del template.
+        Empresa emp = new Empresa();
+        model.addAttribute("emp", emp); //Apuntamos a un objeto vacio para rellenar luego en la BD.
+        return "agregarEmpresa";
+    }
+    //Despues de crear el servicio de AgregarEmpresa creamos el html agregarEmpresa
+
+
+    /* AGREGAR EMPRESAS */
+   // [26.Ctrll.M].Servicio del controlador para guardar la empresa del bóton Crear empresa.
+    @PostMapping("/GuardarEmpresa") //Como se va a settear info a la BD, debe de ser un método post.
+    //Recibe 2 atributos,uno de tipo de Empresa que es la que se va a guardar y otro para hacer un redireccionamiento
+    public String guardarEmpresas(Empresa emp, RedirectAttributes redirectAttributes) {
+        if (empresaService.saveOrUpdateEmpresa(emp)) { //Establecemos la condición para saber que si se guardó devuelva un mensaje.
+             return "redirect:/VerEmpresas"; //Le decimos que se quede en el Template de verEmpresa si guardo correctamente.
+        }
+        return  "redirect:/AgregarEmpresa";//Se queda en el template de agregarEmpresa
+        /*Nota: Si quiero ir a un template de html, solo pongo el nombre del template si direcciono a un servicio
+        * debo de poner la palabra redirect*/
+    }
+
+
+
+
+
 
 
 
