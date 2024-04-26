@@ -2,12 +2,13 @@ package edu.enterprise.spring.models;
 
 import jakarta.persistence.*;
 
-/*[7].Creo el package de models o entities y alli creo las clases o entidades, y como estamos
+
+/*[7].Creo el package de models, domain o entities y alli creo las clases o entidades, y como estamos
 programando para la web con spring boot debo de utilizar las anotaciones qne me provee dicho
 framework para que entienda que dicha clase se va a comunicar con la BD a travez de @Entity.*/
 @Entity
 @Table(name = "empresa") //[8].Con esta anotación la BD a traves de Hibernate se da cuenta que esta entidad va enlazada a una tabla.
-public class Empresa {
+public class Empresa { //La clase codelo que se conoce como POJO: Se trata de una clase básica de dominio o simplemente contendrá atributos básicos y los respectivos métodos “getter” y “setter” para acceder a estos.
 
     //[9].Creó los atributos de la clase.
     @Id //[9.A]. Debo de poner un atributo con ID unico de la clase ya que está será una tabla de una BD.

@@ -23,12 +23,9 @@ public class EmpresaService {
 
     /* GUARDAR O ACTUALIZAR EMPRESA */
     //[21].Método que me permite actualizar o guardar una empresa.
-    public boolean saveOrUpdateEmpresa(Empresa empresa) {//MMe retorna un booleano para que me diga si guardo/actalizó o no y le debo pasar el objeto Empresa como parámetro.
-        Empresa emp = empresaRepository.save(empresa); //Creo una variable emp de tipo Empresa donde me va a guardar la emrpesa por el método.save.
-        if (empresaRepository.findById(emp.getId()) != null) { //Tengo que la empresa existe y eso lo hago con un condicional. true guarde, false que no guarde.
-            return true;
-        }
-        return false;
+    public Empresa saveOrUpdateEmpresa(Empresa empresa) {//Me retorna un booleano para que me diga si guardo/actalizó o no y le debo pasar el objeto Empresa como parámetro.
+        Empresa emp = empresaRepository.save(empresa); //Creo una variable emp de tipo Empresa donde me va a guardar la emrpesa por el método.save de JPA repository.
+        return emp; //Retorna la empresa.
     }
 
 
@@ -52,6 +49,7 @@ public class EmpresaService {
     public Empresa getEmpresaById(Integer id) { //Me retorna una empresa cuando le pase el Id
         return empresaRepository.findById(id).get(); //Me trae la empresa por su id.
     }
+    //Nota: devolverun null es una pésima practica.
 
 
     /* ELIMINAR EMPRESA */
