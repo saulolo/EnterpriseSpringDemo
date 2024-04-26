@@ -77,10 +77,12 @@ link: https://www.w3schools.com/bootstrap/bootstrap_theme_me.asp -->
                 <td th:text="${empresa.telefono}"></td>
                 <td th:text="${empresa.NIT}"></td>
                 <td>
-                    <button type="button" class="btn btn-warning"><a th:href="@{/EditarEmpresa}">Editar</a></button>
+                    <button type="button" class="btn btn-warning"><a th:href="@{/EditarEmpresa/{id}(id=${empresa.id})}">Editar</a></button>
+                    <!--/{id}(id=${empresa.id}: Le tengo que poner el Id que esta espereando y esa lo capturo de la variable empresa-->
+                    <!--del bucle foreach en el punto [26.Ctrll.I] lo mismo para el boton eliminar.-->
                 </td>
                 <td>
-                    <button type="button" class="btn btn-danger"><a th:href="@{/EliminarEmpresa}">Eliminar</a></button>
+                    <button type="button" class="btn btn-danger"><a th:href="@{/EliminarEmpresa/{id}(id=${empresa.id})}">Eliminar</a></button>
                 </td>
             </tr>
         </table>

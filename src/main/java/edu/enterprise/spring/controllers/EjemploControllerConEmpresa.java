@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -61,8 +62,8 @@ public class EjemploControllerConEmpresa {
 
     /* AGREGAR EMPRESAS */
    // [26.Ctrll.M].Servicio del controlador para guardar la empresa del bóton Crear empresa.
-    @PostMapping("/GuardarEmpresa") //Como se va a settear info a la BD, debe de ser un método post.
     //Recibe 2 atributos,uno de tipo de Empresa que es la que se va a guardar y otro para hacer un redireccionamiento
+    @PostMapping("/GuardarEmpresa") //Como se va a settear info a la BD, debe de ser un método post.
     public String guardarEmpresas(Empresa emp, RedirectAttributes redirectAttributes) {
         if (empresaService.saveOrUpdateEmpresa(emp)) { //Establecemos la condición para saber que si se guardó devuelva un mensaje.
              return "redirect:/VerEmpresas"; //Le decimos que se quede en el Template de verEmpresa si guardo correctamente.
@@ -73,9 +74,41 @@ public class EjemploControllerConEmpresa {
     }
 
 
+    /* EDITAR EMPRESAS */
+    // [26.Ctrll.N]. Servicio del controlador para editar la empresa del bóton Editar.
+    //@PathVariable: Porque llega como una ruta URL pasa saber el donde y el id del elemento a editar.
+    @GetMapping("/EditarEmpresa/{id}")
+    public String editarEmpresa(Model model, @PathVariable Integer id) {
+        //Creo un atributo para el modelo que se llame igualmente emp y es el que ira al html para llenar o alimentar campos
+        Empresa enp = empresaService.getEmpresaById(id);  //Me traigo la empresa que ya exite por Id.
+        model.addAttribute("emp", enp); //la agregamos al modelo
+        return "editarEmpresa"; //Regressa este HTML(Template)
+    }
 
 
+    /* ACTUALIZAR EMPRESA*/
+    // [26.Ctrll.O]. Servicio del controlador para actalizar la empresa del bóton Actualizar Empresa.
+    @PostMapping("/ActualizarEmpresa") //Es PostMapping porque lleva información.
+    public String updateEmpresa(Empresa emp)  {
+        if (empresaService.saveOrUpdateEmpresa(emp)) {
+            return "redirect:/VerEmpresas";
+        }
+        return  "redirect:/EditarEmpresa"; //sino se ejecuta me deja en la pagina de EditarEmpresa
+    }
 
+
+    /* ELIMINAR EMPRESA*/
+    // [26.Ctrll.P]. Servicio del controlador para elimibar la empresa del bóton Eliminar.
+    //Para este servicio no se necesita una plantilla(Template) html.
+    @GetMapping("/EliminarEmpresa/{id}") //Es GetMapping porque consulta y quita, pero no lleva..
+    public String eliminarEmpresa(@PathVariable Integer id) { //No necesito el modelo porque no estoy enviando información a alguna página html, solo estoy eliminando.
+        try {
+            empresaService.deleteEmpresa(id); //Generamos un Try catch para el manejo de la excepción.
+        } catch (Exception e) {
+            return "redirect:/VerEmpresas";
+        }
+        return "redirect:/VerEmpresas";  //En ambas se queda aqui porque me queda en la misma HTML.
+    }
 
 
 
