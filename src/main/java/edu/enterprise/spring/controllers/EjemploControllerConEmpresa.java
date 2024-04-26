@@ -17,11 +17,14 @@ import java.util.List;
 ejemplo de base sobre este protocolo de comuncicación. La diferencia principal entre @RestController
 y @Controller radica en su propósito y la forma en que manejan las solicitudes HTTP en una
 aplicación Spring MVC. @Controller se utiliza para manejar solicitudes HTTP y devolver vistas
-HTML en una aplicación web tradicional (por ejemplo, un objeto ModelAndView), @RestController
+HTML(Genera un HTML) en una aplicación web tradicional (por ejemplo, un objeto ModelAndView), @RestController
 se utiliza para crear servicios web RESTful que devuelven datos directamente al cliente en
-formato JSON o XML. La elección entre @Controller y @RestController depende de si estás
+formato (diccionario) JSON o XML. La elección entre @Controller y @RestController depende de si estás
 construyendo una aplicación web tradicional que requiere la generación de vistas o un servicio
-web RESTful que devuelve datos. */
+web RESTful que devuelve datos.
+@Controller: Devuelve MVC (Para aplicaciones con poca información.).
+@RestController: Devuelve Servicios Resful (Para aplicaciones con mucha información tipo MercadoLibre.)
+NOTA: El desarrollo con RestController lo continuare en una rama nueva llamada saul_rest*/
 
 @Controller //[26.Ctrll.B].Anotación para decorar la clase como Controller y asi indicarselo a Spring Boot
 public class EjemploControllerConEmpresa {
