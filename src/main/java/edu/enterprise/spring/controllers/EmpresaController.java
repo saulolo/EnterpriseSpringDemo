@@ -1,39 +1,128 @@
 package edu.enterprise.spring.controllers;
 
 import edu.enterprise.spring.models.Empresa;
+import edu.enterprise.spring.services.EmpresaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/*[25].Creo un package (capa) llamado controllers esta tiene la responsabilidad de “dialogar”
-con el “mundo exterior”, es decir, sistemas externos como los front web o diferentes clientes
-como un explorador web o un sistema REST especializado como POSTMAN, INSOMNIA, etc.
-Este conjunto de servicios REST conforman lo que se denomina como la API de nuestro software,
-esto significa, será la interfaz de uso y comunicación que propone este artefacto de Back End.
-Nota 1: Tambien existe otro tipo distintos al Rest, como son Web SOAP.
-Nota 2: en este punto voy a hacer otra clase llamada EjemploControllerConEmpresa para probar
-el otro tipo de comunciación que es controller y que no es de tipo RestCntroller para aprender
-ha utilizar ambos sistemas de comunciación, pero el resto de proyecto se utiliozara RestController;
-para Controler utilizare los item Ctrll, ejemplo [26.Ctrll.A]. */
+import java.util.List;
 
+/*[26.Ctrll.A]. Cree esta clase para trabajar con la anotación @Controller y tener como un
+ejemplo de base sobre este protocolo de comuncicación. La diferencia principal entre @RestController
+y @Controller radica en su propósito y la forma en que manejan las solicitudes HTTP en una
+aplicación Spring MVC. @Controller se utiliza para manejar solicitudes HTTP y devolver vistas
+HTML(Genera un HTML) en una aplicación web tradicional (por ejemplo, un objeto ModelAndView), @RestController
+se utiliza para crear servicios web RESTful que devuelven datos directamente al cliente en
+formato (diccionario) JSON o XML. La elección entre @Controller y @RestController depende de si estás
+construyendo una aplicación web tradicional que requiere la generación de vistas o un servicio
+web RESTful que devuelve datos.
+@Controller: Devuelve MVC (Para aplicaciones con poca información.).
+@RestController: Devuelve Servicios Resful (Para aplicaciones con mucha información tipo MercadoLibre.)
+NOTA: El desarrollo con RestController lo continuare en una rama nueva llamada RestController y en esta
+rama trabajare sobre el archivo EmpresaRestController*/
 
-@RestController //[5]. indica que esta clase Java oficiara de controlador y expondrá varios endpoints de tipo REST.
+@Controller //[26.Ctrll.B].Anotación para decorar la clase como Controller y asi indicarselo a Spring Boot
 public class EmpresaController {
 
+    @Autowired //[26.Ctrll.D].Debo de utilizar esta anotación para inyectar o enlazar a la clase EmpresaService (No basta solo con instanciar).
+    EmpresaService empresaService; //[26.Ctrll.C] Instancio el Servicio con el cual me quiero comunicar para traer sus métodos.
 
-    /*[6].Para lograr que el método “saludar” sea un servicio REST, tendremos que decorarlo
-    con dicha anotación, y entre parentesis el nombre del servicio con el cual lo quiero
-    exponer. Con esta anotación indicamos que este método es un servicio REST que se
-    expondrá mediante el método HTTP GET, que es el método HTTP más frecuente. */
-    @GetMapping("/hello")
-    public String saludar() {
-        return "Hola Mundo con spring boot";
+    /* VER EMPRESAS */
+    //[26.Ctrll.D].Creo el metodo viewEmpresas que me va a permitir ver todas las empresas listadas.
+    //({"/Empresas", "/VerEmpresas"}) //"/Empresas", es la otra URL que podia direccionar este coontrolador.
+    @GetMapping({"/", "/VerEmpresas"}) //Esta anotación @GetMapping indica que este método manejará solicitudes GET a las URL "/" (que es el home) o "/VerEmpresas", esta anotación permite definir múltiples rutas.
+    public String viewEmpresas(Model model, @ModelAttribute ("mensaje") String mensaje) { //El objeto model de la clase Model es que recibe cualquier cosa, y aparte de que la recibo como argumento, la puedo modelar dentro del método y devuelvo algo.
+        //Recibe un segundo parametro que es el mensaje que llega de confirmación para el usuario colocado en el metodo de guardarEmpresas(), el cual se llama "mensaje" y es de tipo String, para ello debo de utilizar la anotación @ModelAttribute ya que viene como un atributo de modelo.
+        //El objeto Model se utiliza para pasar datos desde el controlador a la vista. Es un objeto proporcionado por el framework que permite agregar atributos que se mostrarán en la vista.
+        List<Empresa> listaEmpresas = empresaService.getAllEmpresas(); // Creo una variable llamada listaEmpresas de tipo List<Empresa> que va a ser igual al metodo que creé en EmpresaService que me devuelve todas las empresas (getAllEmpresas()).
+        //Utiliza el objeto Model para agregar la lista de empresas al modelo, de modo que la vista pueda acceder a esta lista y mostrarla al usuario.
+        model.addAttribute("emplist", listaEmpresas); //Agrega la lista de empresas obtenida en el paso anterior al modelo con el nombre "emplist".
+        model.addAttribute("mensaje", mensaje); //Lo agrego al modelo, que se lame "mensaje" y se aliemnta de mensaje.
+        //Esto significa que estás agregando la lista de empresas al modelo con el nombre "emplist". En la vista asociada, podrás acceder a esta lista utilizando el nombre "emplist" y mostrar los datos de las empresas según sea necesario
+        return "verEmpresas"; //Me retorna el nombre del link de la pagina HTML donde voy a ver lo retornado y el cual apunta al package templates para darle forma y estilo.
+    }
+    /* Nota: El uso del objeto Model permite que el controlador y la vista estén desacoplados. El controlador no necesita conocer los detalles de cómo se representan los datos en la vista.
+        Esto hace que el código sea más mantenible y flexible, ya que podemos cambiar la vista sin afectar el controlador y viceversa.*/
+
+    /*[26.Ctrll.E].Voy al package templates y creo un archivo html con el nombre tal cual del return
+    en este caso verEmpresas en el cual voy a crear la plantilla estetica donde mostraré lo que me
+    retorna este controlador de viewEmpresas.*/
+    //[26.Ctrll.F]. Para que la vista en html sea posible, debo de inyectar la dependecia Thymelief en el archivo pom.xml.
+
+
+    /* AGREGAR EMPRESAS */
+    //[26.Ctrll.K].Creó el servicio que me guarde la empresa.
+    @GetMapping("/AgregarEmpresa")
+    public String nuevaEmpresa(Model model, @ModelAttribute ("mensaje") String mensaje) { //Devuelve un String porque llama el nombre del template.
+        Empresa emp = new Empresa();
+        model.addAttribute("emp", emp); //Apuntamos a un objeto vacio para rellenar luego en la BD.
+        model.addAttribute("mensaje", mensaje);
+        return "agregarEmpresa"; //Me lleva al template de agregarEmpresa
+    }
+    //Despues de crear el servicio de AgregarEmpresa creamos el html agregarEmpresa
+
+
+    /* AGREGAR EMPRESAS */
+   // [26.Ctrll.M].Servicio del controlador para guardar la empresa del bóton Crear empresa.
+    //Recibe 2 atributos,uno de tipo de Empresa que es la que se va a guardar y otro para hacer un redireccionamiento
+    @PostMapping("/GuardarEmpresa") //Como se va a settear info a la BD, debe de ser un método post.
+    public String guardarEmpresas(Empresa emp, RedirectAttributes redirectAttributes) { //Paso por poarametros RedirectAttributes para agregar mensajes de confirmación para que el usuario final se entere..
+        if (empresaService.saveOrUpdateEmpresa(emp)) { //Establecemos la condición para saber que si se guardó devuelva un mensaje.
+            redirectAttributes.addFlashAttribute("mensaje", "saveOK"); //addFlashAttribute: guardo un mensae rapido, que es el identificador (mensaje) y el texto (saveOK).
+            return "redirect:/VerEmpresas"; //Le decimos que se quede en el Template de verEmpresa si guardo correctamente.
+        } // Ambos return nos redireccioan a un servicio.
+        redirectAttributes.addFlashAttribute("mensaje", "saveError"); //En caso de que no guarde la empresa se genera este mensaje.
+        return  "redirect:/AgregarEmpresa";//Se queda en el template de agregarEmpresa
+        /*Nota: Si quiero ir a un template de html, solo pongo el nombre del template si direcciono a un servicio
+        * debo de poner la palabra redirect*/
     }
 
-    //[12].Creo un servicio para probar los métodos de la clase Empresa.
-    @GetMapping("/test")
-    public String test() {
-        Empresa emp = new Empresa("SOLAR SAS", "Calle la geta", "313313313", "1234567");
-        emp.setNombre("SOLAR LTDA");
-        return ("ID: " + emp.getId() + " Nombre: " + emp.getNombre() + " NIT: " + emp.getNIT());
+
+    /* EDITAR EMPRESAS */
+    // [26.Ctrll.N]. Servicio del controlador para editar la empresa del bóton Editar.
+    //@PathVariable: Porque llega como una ruta URL pasa saber el donde y el id del elemento a editar.
+    @GetMapping("/EditarEmpresa/{id}")
+    public String editarEmpresa(Model model, @PathVariable Integer id, @ModelAttribute ("mensaje") String mensaje) {
+        //Creo un atributo para el modelo que se llame igualmente emp y es el que ira al html para llenar o alimentar campos
+        Empresa enp = empresaService.getEmpresaById(id);  //Me traigo la empresa que ya exite por Id.
+        model.addAttribute("emp", enp); //la agregamos al modelo
+        model.addAttribute("mensaje", mensaje);
+        return "editarEmpresa"; //Regressa este HTML(Template)
     }
+
+
+    /* ACTUALIZAR EMPRESA*/
+    // [26.Ctrll.O]. Servicio del controlador para actalizar la empresa del bóton Actualizar Empresa.
+    @PostMapping("/ActualizarEmpresa") //Es PostMapping porque lleva información.
+    public String updateEmpresa(Empresa emp, RedirectAttributes redirectAttributes)  {
+        if (empresaService.saveOrUpdateEmpresa(emp)) {
+            redirectAttributes.addFlashAttribute("mensaje", "updateOK");
+            return "redirect:/VerEmpresas";
+        }
+        redirectAttributes.addFlashAttribute("mensaje", "updateError");
+        return  "redirect:/EditarEmpresa"; //sino se ejecuta me deja en la pagina de EditarEmpresa
+    }
+
+
+    /* ELIMINAR EMPRESA*/
+    // [26.Ctrll.P]. Servicio del controlador para elimibar la empresa del bóton Eliminar.
+    //Para este servicio no se necesita una plantilla(Template) html.
+    @GetMapping("/EliminarEmpresa/{id}") //Es GetMapping porque consulta y quita, pero no lleva..
+    public String eliminarEmpresa(@PathVariable Integer id, RedirectAttributes redirectAttributes) { //No necesito el modelo porque no estoy enviando información a alguna página html, solo estoy eliminando.
+        if (empresaService.deleteEmpresa(id) == true) {
+            redirectAttributes.addFlashAttribute("mensaje", "deleteOK");
+            return "redirect:/VerEmpresas";
+        }
+        redirectAttributes.addFlashAttribute("mensaje", "deleteError");
+        return "redirect:/VerEmpresas";  //En ambas condiciones se queda aqui porque me queda en la misma HTML.
+    }
+
+
+
 }
