@@ -7,8 +7,12 @@ por thymeleaf la cual inyecte como dependencia o motor a trabajar.-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!--Importación de Estilos toastr-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--Importación del script toastr-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <style>
         .container-fluid {
             padding-top: 70px;
@@ -77,12 +81,14 @@ link: https://www.w3schools.com/bootstrap/bootstrap_theme_me.asp -->
                 <td th:text="${empresa.telefono}"></td>
                 <td th:text="${empresa.NIT}"></td>
                 <td>
-                    <button type="button" class="btn btn-warning"><a th:href="@{/EditarEmpresa/{id}(id=${empresa.id})}">Editar</a></button>
+                    <button type="button" class="btn btn-warning"><a th:href="@{/EditarEmpresa/{id}(id=${empresa.id})}">Editar</a>
+                    </button>
                     <!--/{id}(id=${empresa.id}: Le tengo que poner el Id que esta espereando y esa lo capturo de la variable empresa-->
                     <!--del bucle foreach en el punto [26.Ctrll.I] lo mismo para el boton eliminar.-->
                 </td>
                 <td>
-                    <button type="button" class="btn btn-danger"><a th:href="@{/EliminarEmpresa/{id}(id=${empresa.id})}">Eliminar</a></button>
+                    <button type="button" class="btn btn-danger"><a
+                            th:href="@{/EliminarEmpresa/{id}(id=${empresa.id})}">Eliminar</a></button>
                 </td>
             </tr>
         </table>
@@ -90,14 +96,57 @@ link: https://www.w3schools.com/bootstrap/bootstrap_theme_me.asp -->
 
     <!-- [26.Ctrll.J].Botón Agregar Nueva Empresa -->
     <div class="container-fluid bg-3 text-left">
-         <button type="button" class="btn btn-success"><a th:href="@{/AgregarEmpresa}" target="_blank">Agregar Nueva Empresa</a></button>
+        <button type="button" class="btn btn-success"><a th:href="@{/AgregarEmpresa}">Agregar Nueva
+            Empresa</a></button>
         <!--"@{/}" Indica que esta llamando a un servicio por las anotaciones (arroba)-->
     </div>
 
 
 </div>
 
+<!--Script para el mensaje.-->
+<!--Traigo un elemento de afuera (th) y le digo que estas lineas (inline) van a trabajar con (javascript)-->
+<script th:inline="javascript">
+    //Creo una ventana que dentro va a cargar una función.
+    window.onload = function () {
+        var msg = [[${mensaje}]] //Creo una variable que se va a alimentar con un mensaje que viene de afuera.
+        //Genero una consicion dependiendo del mensaje que me llegue.
+        if (msg == "saveOK") {
+            //Abra una linea de comando(Command) y pongale una ventana emergente (toastr), con el estilo de boostrap "success" y ponga el siguiente mensaje ("Empresa creada con ésito!") y asimparab las otras condiciones.
+            //Para los toastr: https://codeseven.github.io/toastr/demo.html y debo de importarlo como link de estilos en el Head
+            Command : toastr["success"]("Empresa creada con éxito!")
+        } else if (msg == "updateOK"){
+            Command : toastr["success"]("Empresa actualizada con éxito!")
+        }
+        else if (msg == "deleteOK") {
+            Command : toastr["error"]("Empresa eliminada con éxito!")
+        }
+        else if (msg == "deleteError") {
+            Command : toastr["error"]("Empresa no se pudo eliminar!")
+        }
 
+    }
+    //[26.Ctrll.Q]. Una vez tenga todos los botones con sus servicios funcionales, agrefo los mensajes emergentes tipo toastr
+    //Agrego estilos de toastr
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+</script>
 
 
 </body>

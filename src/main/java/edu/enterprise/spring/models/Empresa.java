@@ -11,7 +11,7 @@ public class Empresa {
 
     //[9].Creó los atributos de la clase.
     @Id //[9.A]. Debo de poner un atributo con ID unico de la clase ya que está será una tabla de una BD.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //[9.B]. Asi decimos que cada empresa cuando se creé en la BD, lo haga de forma autoincremental.
+    @GeneratedValue(strategy = GenerationType.AUTO) //[9.B]. Asi decimos que cada empresa cuando se creé en la BD, lo haga de forma autoincremental, con Identity aunque elimines guarda el consucutivo.
     private int id;
     private String nombre;
     private String direccion;

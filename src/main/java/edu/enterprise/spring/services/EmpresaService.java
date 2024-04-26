@@ -58,10 +58,10 @@ public class EmpresaService {
     //[24].Método que me permite eliminar una empresa por Id.
     public boolean deleteEmpresa(Integer id) { //Me retorna un booleano este método y recibe por párametro el id de la empresa.
         empresaRepository.deleteById(id); //Utilizo este metodo de JPA para eliminar por id.
-        if (getEmpresaById(id) != null) { //Hago una validación que si no llega vacio me retorne un false y en caso contrario un true.
-            return false;
+        if (empresaRepository.findById(id) != null) { //Hago una validación del servicio de eliminar, y verifica que si al eliminar no hay nada (que llega null), retorne un true y en caso contrario un false.
+            return true;
         }
-        return true;
+        return false;
     }
 
 }
