@@ -24,7 +24,7 @@ construyendo una aplicación web tradicional que requiere la generación de vist
 web RESTful que devuelve datos.
 @Controller: Devuelve MVC (Para aplicaciones con poca información.).
 @RestController: Devuelve Servicios Resful (Para aplicaciones con mucha información tipo MercadoLibre.)
-NOTA: El desarrollo con RestController lo continuare en una rama nueva llamada saul_rest*/
+NOTA: El desarrollo con RestController lo continuare en una rama nueva llamada RestController*/
 
 @Controller //[26.Ctrll.B].Anotación para decorar la clase como Controller y asi indicarselo a Spring Boot
 public class EjemploControllerConEmpresa {
