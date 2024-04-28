@@ -14,7 +14,7 @@ servicios de nuestro proyecto, o lo que es lo mismo, la lógica a implementar.*/
 public class EmpresaService {
 
 
-    @Autowired //[20].Anotación que me permite conectar con el repositorio de Empresao.
+    @Autowired //[20].Anotación que me permite conectar con el repositorio de Empresao (Inyección de dependencias).
     EmpresaRepository empresaRepository;  //[19].Creo un Objeto de tipo EmpresaRepository y asi usar todas las funciones que alli están y que heredan de hibernate.
 
 
@@ -33,7 +33,7 @@ public class EmpresaService {
     //[22].Método que me permite ver una lista de todas las empresass.
     public List<Empresa> getAllEmpresas() {
         List<Empresa> empresaList = new ArrayList<>(); //Creo una variable tipo objeto de tipo lista donde se almacenaran todas las empresas que quiero ver y o hago con el método ArrayList.
-        empresaRepository.findAll().forEach(empresa -> empresaList.add(empresa)); //llamo el objeto que heredA de Jparepository (empresaRepository) para traerme el metodo
+        empresaRepository.findAll().forEach(empresa -> empresaList.add(empresa)); //llamo el objeto que hereda de Jparepository (empresaRepository) para traerme el metodo
         // que necesite, en este caso findAll que me permite ver todas las empresas.
         //El método .findAll me devuelve un iterable, por ende debo de recorrelo para poderlas ver con un foreach.
         //Este metodo: .forEach(empresa -> empresaList.add(empresa)) es lo mismo que este otro:
@@ -57,7 +57,7 @@ public class EmpresaService {
     public boolean deleteEmpresa(Integer id) { //Me retorna un booleano este método y recibe por párametro el id de la empresa.
         empresaRepository.deleteById(id); //Utilizo este metodo de JPA para eliminar por id.
         if (empresaRepository.findById(id) != null) { //Hago una validación del servicio de eliminar, y verifica que si al eliminar no hay nada (que llega null), retorne un true y en caso contrario un false.
-            return true;
+            return true; ////Otra forma de validar es con isPresent en vez de null.
         }
         return false;
     }
