@@ -11,8 +11,9 @@ framework para que entienda que dicha clase se va a comunicar con la BD a travez
 public class Empresa { //La clase codelo que se conoce como POJO: Se trata de una clase básica de dominio o simplemente contendrá atributos básicos y los respectivos métodos “getter” y “setter” para acceder a estos.
 
     //[9].Creó los atributos de la clase.
-    @Id //[9.A]. Debo de poner un atributo con ID unico de la clase ya que está será una tabla de una BD.
-    @GeneratedValue(strategy = GenerationType.AUTO) //[9.B]. Asi decimos que cada empresa cuando se creé en la BD, lo haga de forma autoincremental, con Identity aunque elimines guarda el consucutivo.
+    @Id //[9.A]. Debo de poner un atributo con ID unico y ordinal por "tabla" de la clase ya que está será una tabla de una BD.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //[9.B]. Asi decimos que cada empresa cuando se creé en la BD, lo haga de forma autoincremental, con Identity aunque elimines guarda el consucutivo.
+    //@Column(columnDefinition = "serial") //Para que sea autoincremental por columnas de manera separada en caso de que colocara GenerationType.AUTO. (con AUTO se genera un id global)
     private int id;
     private String nombre;
     private String direccion;

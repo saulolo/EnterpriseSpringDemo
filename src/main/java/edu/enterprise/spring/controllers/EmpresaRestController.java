@@ -76,6 +76,7 @@ public class EmpresaRestController {
 
 	/* Ver Empresas por Id */
 	//[33]. Metodo para ver una empresa por Id.
+	//LA mejor manera de hacer este método es retornando un Optional y no la clase Empresa para que me retorne un null en caso de no encontrar una empresa y no un error como si no lo manejara un un optional
 	//Puedo poner tambien el GetMapping asi: @GetMapping("path = "enterprises/{id}")
 	// y la firma del método debe de ser asi: (@PathVariable ("id") Integer id)
 	@GetMapping("/{id}")
