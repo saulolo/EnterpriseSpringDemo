@@ -79,6 +79,6 @@ public class MovimientoDineroRestController {
 		return movimientoDineroService.obtenerPorEmpresa(id);
 	}
 
-	//Voy para La clase 17 y para el punto [51]
+	//Voy para La clase 17 y para el punto [51], aqui me paso a la rama feature/develop, para continuar trabajando con Controller
 
 }
