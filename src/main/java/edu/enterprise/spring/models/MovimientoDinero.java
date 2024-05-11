@@ -9,7 +9,7 @@ public class MovimientoDinero {
 
     //Atributos
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private long monto;
     private String concepto;

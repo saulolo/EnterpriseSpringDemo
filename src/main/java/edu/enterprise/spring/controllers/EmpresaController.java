@@ -43,7 +43,7 @@ public class EmpresaController {
         List<Empresa> listaEmpresas = empresaService.getAllEmpresas(); // Creo una variable llamada listaEmpresas de tipo List<Empresa> que va a ser igual al metodo que creé en EmpresaService que me devuelve todas las empresas (getAllEmpresas()).
         //Utiliza el objeto Model para agregar la lista de empresas al modelo, de modo que la vista pueda acceder a esta lista y mostrarla al usuario.
         model.addAttribute("emplist", listaEmpresas); //Agrega la lista de empresas obtenida en el paso anterior al modelo con el nombre "emplist".
-        model.addAttribute("mensaje", mensaje); //Lo agrego al modelo, que se lame "mensaje" y se aliemnta de mensaje.
+        model.addAttribute("mensaje", mensaje); //Lo agrego al modelo, que se lame "mensaje" y se alimenta de mensaje.
         //Esto significa que estás agregando la lista de empresas al modelo con el nombre "emplist". En la vista asociada, podrás acceder a esta lista utilizando el nombre "emplist" y mostrar los datos de las empresas según sea necesario
         return "verEmpresas"; //Me retorna el nombre del link de la pagina HTML donde voy a ver lo retornado y el cual apunta al package templates para darle forma y estilo.
     }
@@ -68,7 +68,7 @@ public class EmpresaController {
     //Despues de crear el servicio de AgregarEmpresa creamos el html agregarEmpresa
 
 
-    /* AGREGAR EMPRESAS */
+    /* GUARDAR EMPRESAS (BOTÓN) */
    // [26.Ctrll.M].Servicio del controlador para guardar la empresa del bóton Crear empresa.
     //Recibe 2 atributos,uno de tipo de Empresa que es la que se va a guardar y otro para hacer un redireccionamiento
     @PostMapping("/GuardarEmpresa") //Como se va a settear info a la BD, debe de ser un método post.

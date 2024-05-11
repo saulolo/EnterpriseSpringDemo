@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agregar Nuevo Empleado</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .container-fluid {
+            padding-top: 70px;
+            padding-bottom: 70px;
+        }
+
+        .bg-1 {
+            background-color: #1abc9c; /* Green */
+            color: #ffffff;
+        }
+
+        .bg-3 {
+            background-color: #ffffff; /* White */
+            color: #555555;
+        }
+
+        a {
+            color: white;
+        }
+
+        a:hover {
+            color: black;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- [27.Ctrll.I].Formulario del Botón Agregar Nuevo Empleado -->
+
+<div class="container-fluid bg-1 text-center">
+    <h1>Agregue aqui los datos del Empleado</h1>
+</div>
+<br>
+
+<!--Formulario-->
+<form class="form-horizontal" th:action="@{/GuardarEmpleado}" th:object="${empl}" method="post">
+
+    <!--Campo Nombre-->
+    <!--Divido el espacio en 12 columnas y las reparto en los label e input-->
+    <div class="form-group col-md-12">
+        <label class="col-md-2" for="nombre">Nombre del empleado:</label>
+        <div class="col-md-6">
+            <input type="text" th:field="*{nombre}" class="form-control" id="nombre"
+                   placeholder="Ingrese el nombre del empleado." required="required">
+        </div>
+    </div>
+
+    <!--Campo Correo-->
+    <div class="form-group col-md-12">
+        <label class="col-md-2" for="correo">Email del empleado:</label>
+        <div class="col-md-6">
+            <input type="email" th:field="*{correo}" class="form-control" id="correo" placeholder="Ingrese el email." required="required">
+            <!--type="email": porque se va a introducir un correo electrónico y asi detecte un punto y una @-->
+        </div>
+    </div>
+
+    <!--Campo Empresa-->
+    <!--[27.Ctrll.J].Agrego el selector de la empresa en el campo Empresa a la que pertenece.-->
+    <div class="form-group col-md-12">
+        <label class="col-md-2" for="empresa">Empresa a la que pertenece:</label>
+        <div class="col-md-6">
+            <select th:field="*{empresa}" class="form-control" id="empresa" required="required">
+                <option th:each="empresa : ${emprelist}" th:text="${empresa.nombre}" th:value="${empresa.id}"></option>
+                <!--Hago una iteración, que por cada objeto que encuentre en emprelist asuma que es uan empresa y el texto que muestra en pantalla es el que encuentre en empresa en su posición nombre pero el valor que va a guardar es el id.-->
+            </select>
+        </div>
+        <!--select: porque vamos a seleccionar en ese campo la empresa que traiga -->
+        <!--th:field="*{empresa}": es el campo que va alimentar esta selección. -->
+    </div>
+
+    <!--Campo Rol-->
+    <!--[27.Ctrll.K].Agrego el selector del rol en el campo Rol del empleado para que pueda escoger las opciones.-->
+    <div class="form-group col-md-12">
+        <label class="col-md-2" for="rol">Rol del empleado:</label>
+        <div class="col-md-6">
+            <select th:field="*{rol}" class="form-control" id="rol" required="required">
+                <!--Cuando el valor sea 1, en pantalla se muestre Administrativo, y asi sucesivamente.-->
+                <!--Esto lo hago asi porque no cree una entidad para el manejo e los roles-->
+                <option th:value="1">Administrativo</option>
+                <option th:value="2">Operativo</option>
+            </select>
+        </div>
+    </div>
+
+    <!--Botón Crear empleado: para Enviar y ejecutar la acción-->
+    <div class="form-group col-md-12">
+        <div class="col-md-2">
+            <button class="btn btn-success">Registrar Empleado</button>
+            <!-- La funcionalidad de este servicio hay que crearla en el controlador.-->
+        </div>
+    </div>
+
+</form>
+
+<br>
+
+<!--Botón Atras-->
+<div class="form-group col-md-12">
+    <div class="col-md-2">
+        <a href="javascript: history.go(-1)" class="btn btn-info" role="button">Atras</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -64,7 +64,8 @@ link: https://www.w3schools.com/bootstrap/bootstrap_theme_me.asp -->
                 <th>Dirección</th>
                 <th>Telefono</th>
                 <th>NIT</th>
-                <th>Editar</th> <!--Boton-->
+                <th>Empleados</th> <!--Boton  ver Empleados[27.Ctrll.P].-->
+                <th>Editar</th>
                 <th>Eliminar</th> <!--Boton-->
             </tr>
             </thead>
@@ -80,29 +81,33 @@ link: https://www.w3schools.com/bootstrap/bootstrap_theme_me.asp -->
                 <td th:text="${empresa.direccion}"></td>
                 <td th:text="${empresa.telefono}"></td>
                 <td th:text="${empresa.NIT}"></td>
-                <td>
-                    <button type="button" class="btn btn-warning"><a th:href="@{/EditarEmpresa/{id}(id=${empresa.id})}">Editar</a>
-                    </button>
+                <!--Boton Ver Empleados. Una vez creado este boton me dirijo a crear su controlador ya que ya esta su servicio y su repositorio ==> [27.Ctrll.Q]-->
+                <td><button type="button" class="btn btn-info"><a th:href="@{/Empresa/{id}/Empleados (id=${empresa.id})}">Ver</a></button></td>
+                <!--Boton Editar-->
+                <td> <button type="button" class="btn btn-warning"><a th:href="@{/EditarEmpresa/{id}(id=${empresa.id})}">Editar</a></button>
                     <!--/{id}(id=${empresa.id}: Le tengo que poner el Id que esta espereando y esa lo capturo de la variable empresa-->
                     <!--del bucle foreach en el punto [26.Ctrll.I] lo mismo para el boton eliminar.-->
                 </td>
-                <td>
-                    <button type="button" class="btn btn-danger"><a
-                            th:href="@{/EliminarEmpresa/{id}(id=${empresa.id})}">Eliminar</a></button>
-                </td>
+                <!--Boton Eliminar-->
+                <td><button type="button" class="btn btn-danger"><a th:href="@{/EliminarEmpresa/{id}(id=${empresa.id})}">Eliminar</a></button></td>
             </tr>
         </table>
     </div>
 
     <!-- [26.Ctrll.J].Botón Agregar Nueva Empresa -->
     <div class="container-fluid bg-3 text-left">
-        <button type="button" class="btn btn-success"><a th:href="@{/AgregarEmpresa}">Agregar Nueva
-            Empresa</a></button>
+        <button type="button" class="btn btn-success"><a th:href="@{/AgregarEmpresa}">Agregar Nueva Empresa</a></button>
         <!--"@{/}" Indica que esta llamando a un servicio por las anotaciones (arroba)-->
+        <br>
+        <br>
+        <!--Botón Ver lista de Empleados [27.Ctrll.Q]-->
+        <button type="button" class="btn btn-primary"><a th:href="@{/VerEmpleados}">Ver lista de Empleados</a></button>
     </div>
 
 
 </div>
+
+
 
 <!--Script para el mensaje.-->
 <!--Traigo un elemento de afuera (th) y le digo que estas lineas (inline) van a trabajar con (javascript)-->
@@ -126,7 +131,7 @@ link: https://www.w3schools.com/bootstrap/bootstrap_theme_me.asp -->
         }
 
     }
-    //[26.Ctrll.Q]. Una vez tenga todos los botones con sus servicios funcionales, agrefo los mensajes emergentes tipo toastr
+    //[26.Ctrll.Q]. Una vez tenga todos los botones con sus servicios funcionales, agrego los mensajes emergentes tipo toastr
     //Agrego estilos de toastr
     toastr.options = {
         "closeButton": false,
@@ -147,6 +152,8 @@ link: https://www.w3schools.com/bootstrap/bootstrap_theme_me.asp -->
     }
 
 </script>
+
+<!--Me dirijo a crear el CRUD para empleados, partiendo de EmpleadoRepository ==> [27.Ctrll.A]-->
 
 
 </body>
