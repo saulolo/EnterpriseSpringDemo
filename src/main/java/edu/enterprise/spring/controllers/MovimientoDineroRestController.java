@@ -22,7 +22,7 @@ public class MovimientoDineroRestController {
 
 
 	@Autowired
-	MovimientoDineroService movimientoDineroService;
+	private MovimientoDineroService movimientoDineroService;
 
 
 
@@ -269,11 +269,7 @@ public class MovimientoDineroRestController {
 		return sb.toString();
 	}
 
-	//De este apartado pasaré a configurar la URL base de la API REST ==> [59].
-
-
-
-
+	//De este apartado pasaré a configurar la URL base de la API REST en el aplication.properties ==> [59].
 
 }
 

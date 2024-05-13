@@ -14,7 +14,7 @@ import java.util.Optional;
 public class MovimientoDineroService {
 
 	@Autowired
-	MovimientoDineroRepository movimientoDineroRepository;
+	private MovimientoDineroRepository movimientoDineroRepository;
 
 
 	/* GUARDAR O ACTUALIZAR MOVIMIENTO DINERO */

@@ -10,12 +10,23 @@ import java.util.List;
 
 /*[17].Creo un package con el nombre de services donde irán las clases relacionadas con los
 servicios de nuestro proyecto, o lo que es lo mismo, la lógica a implementar.*/
-@Service //[18].Decoro clase con esta abotación para indicar que es una clase de tipo servicios.
+/*Nota: Es importante aclarar que la anotación @Service registra clases en el contenedor de dependencias Spring que luego
+ generará un solo objeto de la misma durante toda la sesión. Esto significa que Spring inyecta estos beans de acuerdo al
+ patrón “Singleton” (un objeto solo por clase).
+*/
+@Service //[18].Decoro clase con esta anotación para indicar que es una clase de tipo servicios. Estas anotaciones de clase se hacen con el fin de registar las clses em el contenedor de dependecnias de Spring.
 public class EmpresaService {
 
+    /* La anotación @Autowired indica a Spring que tiene que buscar en su contenedor de inyecciones una clase que implemente
+    a la interfaz que decora. Luego Spring, creará una instancia de “EmpresaRepository” y la guardará en la referencia
+    “empresaRepository” de manera transparente tanto al programador como a la clase controladora.
+    El simple cambio de que Spring sea el encargado de instanciar los objetos por nosotros, plasma un diseño con muy bajo
+    acoplamiento entre dos clases.*/
 
     @Autowired //[20].Anotación que me permite conectar con el repositorio de Empresao (Inyección de dependencias).
-    EmpresaRepository empresaRepository;  //[19].Creo un Objeto de tipo EmpresaRepository y asi usar todas las funciones que alli están y que heredan de hibernate.
+    private EmpresaRepository empresaRepository;  //[19].Creo un Objeto de tipo EmpresaRepository y asi usar todas las funciones que alli están y que heredan de hibernate.
+    /*Nota: si no utilizaramos la anotacón @Autowired, tendriamos que hacer la instancia de la clase EmpresaRepository de forma manual al estilo "java puro" asi:
+     private EmpresaRepository empresaRepository = new EmpresaRepository(); */
 
 
     //---------------- CREACIÓN DE LOS SERVICIOS -----------------------------------------

@@ -20,7 +20,7 @@ import java.util.Optional;
 public class EmpleadoService {
 
 	@Autowired
-	EmpleadoRepository empleadoRepository;
+	private EmpleadoRepository empleadoRepository;
 
 
 	/* GUARDAR EMPLEADOS */

@@ -16,7 +16,7 @@ import java.util.Optional;
 public class EmpleadoRestController {
 
 	@Autowired
-	EmpleadoService empleadoService;
+	private EmpleadoService empleadoService;
 
 	/* Ver Empleados */
 	@GetMapping

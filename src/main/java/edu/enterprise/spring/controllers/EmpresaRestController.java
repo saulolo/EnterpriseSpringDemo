@@ -21,8 +21,8 @@ public List<Empresa> verEmpresas()......
 @RequestMapping("/enterprises") //Permite unificar todos los nombres de los endpoints que contiene la clase.
 public class EmpresaRestController {
 
-	@Autowired
-	EmpresaService empresaService; //[29]. Hago la inyección de el servicio de Empresa.
+	@Autowired //Esta anotación me permite inyectar automáticaente la instancia de EmpresaService.
+	private EmpresaService empresaService; //[29]. Hago la inyección de el servicio de Empresa con el modificador de acceso private para encapsular y hacer el código mas seguro..
 
 	/* Hola Mundo RestControler */
 	//[30]. Metodo de prueba para ver como generar un saludo personalizado por el nombre que el usuario ingrese.
