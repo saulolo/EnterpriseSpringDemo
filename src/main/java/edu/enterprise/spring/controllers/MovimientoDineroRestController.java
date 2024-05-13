@@ -1,14 +1,18 @@
 package edu.enterprise.spring.controllers;
 
+import edu.enterprise.spring.exceptions.BadRequestException;
+import edu.enterprise.spring.exceptions.ResourceNotFoundException;
 import edu.enterprise.spring.models.MovimientoDinero;
 import edu.enterprise.spring.services.MovimientoDineroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 
 //[50].RestControllers de  movimientoDinero
@@ -27,10 +31,8 @@ public class MovimientoDineroRestController {
 	apoyarnos en una clase de tipo envoltorio llamada “ResponseEntity” (no es una anotación, es una clase). Esta clase
 	deberá estar definida en la sección de retorno situada en la asignatura del método.*/
 
-	/* [53]. Códigos de error HTTP: son códigos de respuesta deberán entregar los servicios REST para seguir  las
-	convenciones y buenas prácticas en caso de que se produzcan excepciones en la ejecución.*/
 
-	/* Ver MovimientoDinero */
+	/* VER MOVIMIENTO DE DINERO */
 	@GetMapping
 	public ResponseEntity<?> verMovimientos() {
 		return ResponseEntity.ok(movimientoDineroService.getAllMovimientoDinero());
@@ -49,7 +51,7 @@ public class MovimientoDineroRestController {
 	se retorna por si en un futuro quedemos modificar la firma de nuestro método con un Map, Set, etc.*/
 
 
-	/* Guardar MovimientoDinero */
+	/* GUARDAR MOVIMIENTO DE DINERO */
 	/*Siguiendo las recomendaciones de la tesis REST, los servicios POST de creación deberían retornar el nuevo recurso
 	creado (201 CREATED(, pero además se propone también, retornar la URL para acceder a ese nuevo recurso. Es un link
 	que apunta al servicio GET “MovimientoDinero by movements”.*/
@@ -64,6 +66,7 @@ public class MovimientoDineroRestController {
 				.toUri();
 		return ResponseEntity.created(location).body(movimientoGuardado);
 	}
+
 	/* Se ha declarado como retorno un “ResponseEntity” que nos permitirá devolver el código 201 (“CREATED”) como se especifica
 	 en la última línea. También, con el método “body”, se retorna el recurso creado entero como respuesta de la petición.
 	 Fragmento de código al estilo DSL: recupera el path actual de este servicio. Como formalidad, REST propone que cada
@@ -73,20 +76,74 @@ public class MovimientoDineroRestController {
 	 sufijo con el path variable “id”. Conformando la URL final http://localhost:8080/clientes/{id} y útil para quien
 	 consuma el servicio.*/
 
-	/* //Guardar MovimientoDinero (version 2, sin ResponseEntity ni el link de retorno)
+	/* //GUARDAR MOVIMIENTO DE DINERO (version 2, sin ResponseEntity ni el link de retorno)
 	 	@PostMapping
 		public MovimientoDinero guardarMovimiento(@RequestBody MovimientoDinero movimiento) {
 		return movimientoDineroService.saveOrUpdateMovimiento(movimiento);
 	}
 	*/
 
-	/* Ver MovimientoDinero por ID */
+
+	/* [53]. Códigos de error HTTP: son códigos de respuesta deberán entregar los servicios REST para seguir  las
+	convenciones y buenas prácticas en caso de que se produzcan excepciones en la ejecución.
+	Modifique el codico anterior (version 3) para generar validaciones con códigos de respuestas HTTP, en el
+	caso de que se encuentre alguna ocurrencia, el código entrará en el “if” y responderá con el código de éxito 200 OK.
+	De lo contrario la ejecución seguirá y finalmente responderá con el código NOT FOUND 404.*/
+
+
+	// VER MOVIMIENTO DE DINERO POR ID
+	@GetMapping("/{id}")
+	public ResponseEntity<?> verMovimientoById(@PathVariable Integer id) {
+		Optional<MovimientoDinero> movimientoEncontrado = movimientoDineroService.getMoviminetoById(id);
+		if (movimientoEncontrado.isPresent()) {
+			return ResponseEntity.ok(movimientoEncontrado.get());
+		}
+		throw new ResourceNotFoundException("Id no encontrado");
+		/* En caso de no encontrar el Id, Lanzo la excepcion personalizada de manera explicita en lugar de construir
+		el código NOT FOUND con “ResponseEntity”.*/
+	}
+
+	/* Pero para manejar las excepiones de una manera mas profesional creamos el package exceptions para alli manejar
+	todas las excepciones personalizadas, para que Spring se encargue de generar el “ResponseEntity.notFound().build()”
+	cuando detecte en tiempo de ejecución que se ha lanzado la excepcion “ResourceNotFoundException”. Este comportamiento,
+	se logra gracias al decorador @ResponseStatus situado en la parte superior de la clase “ResourceNotFoundException”.==> [54].*/
+
+	/* Ahora voy a personalizar otro tipo de excepción en caso de utilizarla y es uno que tiene que ver con la forma del uso y
+	consumo de la petición. Supongamos que determinamos arbitrariamente que el “userName” siempre será válido cuando
+	contenga exactamente tres caracteres. Por ejemplo, “arm”, “ald” o “col”. De acuerdo a esta validación, implementaremos
+	una solución que lanza una excepcion cuando este usuario está mal formado. Este tipo de excepción está contemplado en
+	los códigos HTTP como error 400, que significa “BAD REQUEST”, es decir que la petición está mal formada por el cliente
+	que consume el servicio. Vamos a crear entonces la excepción con el nombre “BadRequestException”, por supuesto, dentro
+	del paquete “exceptions” ==> [56].*/
+
+
+	/* En primer se busca el id con el método getMoviminetoById, Luego; el método map(ResponseEntity::ok) transforma el
+	MovimientoDinero contenido en el Optional en un ResponseEntity con un estado HTTP 200 (OK). Si el Optional está vacío,
+	este método no hace nada. Finalmente, el método orElseThrow(()-> new ResourceNotFoundException("Id no encontrado."))
+	se llama en el Optional. Este método lanza una excepción ResourceNotFoundException si el Optional está vacío. Si el
+	Optional contiene un valor, este método no hace nada.
+	*/
+	/*	//MÉTODO IMPLEMENTADO DE MANERA MAS PROFESIONAL CON EL USO DE LAMDAS
+	 *//* VER MOVIMIENTO DE DINERO POR ID (version 4 con lamdas) *//*
+	@GetMapping("/{id}")
+	public ResponseEntity<?> verMovimientoById(@PathVariable Integer id) {
+		return movimientoDineroService.getMoviminetoById(id)
+				.map(ResponseEntity::ok)
+				.orElseThrow(() -> new ResourceNotFoundException("Id no encontrado."));
+	}*/
+
+
+
+	/*
+	//VER MOVIMIENTO DE DINERO POR ID (version 3 sin la verificación de si encuenta o no el Id)
 	@GetMapping("/{id}")
 	public ResponseEntity<?> verMovimientoById(@PathVariable Integer id) {
 		return ResponseEntity.ok(movimientoDineroService.getMoviminetoById(id));
 	}
+	 */
 
-	///* Ver MovimientoDinero por ID (version 2)*/
+
+		//* VER MOVIMIENTO DE DINERO POR ID(version 2 método plano)*/
 	/*
 		@GetMapping("/{id}")
 	public Optional<MovimientoDinero> verMovimientoById(@PathVariable Integer id) {
@@ -95,20 +152,21 @@ public class MovimientoDineroRestController {
 	*/
 
 
-	/* Editar MovimientoDinero por Id  */
-	@PatchMapping("/{id}") //Actualizo este controlador (Aplica igual para los verbos PUT) para que devuelvas respuestas HTTPS de ResponseEntity generica
-	public ResponseEntity<MovimientoDinero> actulizaciónParcialMovimiento(@PathVariable Integer id, @RequestBody MovimientoDinero movimiento) {
-		MovimientoDinero mov = movimientoDineroService.getMoviminetoById(id).get();
-		if (mov != null) {
-			mov.setConcepto(movimiento.getConcepto());
-			mov.setMonto(movimiento.getMonto());
-			mov.setUsuario(movimiento.getUsuario());
-			return ResponseEntity.ok(movimientoDineroService.saveOrUpdateMovimiento(mov));
+		/* EDITAR MOVIMIENTO DE DINERO POR ID  */
+		@PatchMapping("/{id}") //Actualizo este controlador (Aplica igual para los verbos PUT) para que devuelvas respuestas HTTPS de ResponseEntity generica
+		public ResponseEntity<MovimientoDinero> actulizaciónParcialMovimiento (@PathVariable Integer
+		id, @RequestBody MovimientoDinero movimiento){
+			MovimientoDinero mov = movimientoDineroService.getMoviminetoById(id).get();
+			if (mov != null) {
+				mov.setConcepto(movimiento.getConcepto());
+				mov.setMonto(movimiento.getMonto());
+				mov.setUsuario(movimiento.getUsuario());
+				return ResponseEntity.ok(movimientoDineroService.saveOrUpdateMovimiento(mov));
+			}
+			return null;
 		}
-		return null;
-	}
 
-	/*  Editar MovimientoDinero por Id (Version 2) sin ResponseEntity
+	/*  EDITAR MOVIMIENTO DE DINERO POR ID (Version 2) sin ResponseEntity
 		@PatchMapping("/{id}")
 		public MovimientoDinero actulizaciónParcialMovimiento(@PathVariable Integer id, @RequestBody MovimientoDinero movimiento) {
 		MovimientoDinero mov = movimientoDineroService.getMoviminetoById(id).get();
@@ -123,19 +181,19 @@ public class MovimientoDineroRestController {
 	  */
 
 
-	/* Eliminar MovimientoDinero por Id  */
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> EliminarMovimiento(@PathVariable Integer id) {
-		boolean respuesta = movimientoDineroService.deleteMovimiento(id);
-		if (respuesta) {
-			return ResponseEntity.ok("Se eliminó correctamente el movimiento de dinero con Id: " + id);
+		/* ELIMINAR MOVIMIENTO DE DINERO POR ID  */
+		@DeleteMapping("/{id}")
+		public ResponseEntity<String> EliminarMovimiento (@PathVariable Integer id){
+			boolean respuesta = movimientoDineroService.deleteMovimiento(id);
+			if (respuesta) {
+				return ResponseEntity.ok("Se eliminó correctamente el movimiento de dinero con Id: " + id);
+			}
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NO se eliminó el movimiento de dinero con Id: " + id);
+			//Devuelve un 404 (No encontrado) con un mensaje personalizado en el cuerpo en caso de false.
 		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NO se eliminó el movimiento de dinero con Id: " + id);
-		//Devuelve un 404 (No encontrado) con un mensaje personalizado en el cuerpo en caso de false.
-	}
 
 
-	/* Eliminar MovimientoDinero por Id (Version 2 Sin ResponseEntity)
+	/* ELIMINAR MOVIMIENTO DE DINERO POR ID (Version 2 Sin ResponseEntity)
 		@DeleteMapping("/{id}")
 		public String EliminarMovimiento(@PathVariable Integer id) {
 		boolean respuesta = movimientoDineroService.deleteMovimiento(id);
@@ -147,21 +205,75 @@ public class MovimientoDineroRestController {
 	*/
 
 
-	/* Ver MovimientoDinero filtrado por Empleado  */
-	@GetMapping("/{id}/employees")
-	public ResponseEntity<?> verMovimientosPorEmpleado(@PathVariable Integer id) {
-		return ResponseEntity.ok(movimientoDineroService.obtenerPorEmpleado(id));
+		/* VER MOVIMIENTO DE DINERO FILTRADO POR EMPELADO  */
+		@GetMapping("/{id}/employees")
+		public ResponseEntity<?> verMovimientosPorEmpleado (@PathVariable Integer id){
+			return ResponseEntity.ok(movimientoDineroService.obtenerPorEmpleado(id));
+		}
+
+
+		/* VER MOVIMIENTO DE DINERO FILTRADO POR EMPRESA */
+		@GetMapping("/{id}/enterprises")
+		public ResponseEntity<?> verMovimientosPorEmpresa (@PathVariable Integer id){
+			return ResponseEntity.ok(movimientoDineroService.obtenerPorEmpresa(id));
+		}
+
+		//Voy para La clase 17 y para el punto [51]. aqui me paso a la rama feature/develop, para continuar trabajando con Controller
+		//Luego voy a trabajar los códigos de respuestas de los controladores REST de esta misma clase ==> [52].
+		//Despues de agregar los ResponseEntity a los métodos planos, procederé a agregar los códigos de error. ==> [53].
+
+	/* Spring propone la creación de una clase Java con el propósito exclusivo de manejar el comportamiento de la aplicación
+	para cada una de las excepciones que sean lanzadas durante el consumo de los servicios. La crearé en el paquete de
+	controllers, RestResponseEntityExceptionHandler  ==> [57]. */
+
+	/*[58]. Si bien esta app está enfocado en la elaboración de una API REST donde el tipo “media” de dato más transportado
+	es el estándar JSON, vamos a ver resumidamente como ejemplo otros tipos de media soportados por Spring que pueden ser
+	útiles para algunos casos, ejemplos de estos formaos puden ser PDF, imagenes en PNG, Markdown, etc. En este  ejemplo
+	veré: ==> [58.A]. Respuesta HTML y [58.B] Respuesta XML */
+
+	/* VER MOVIMIENTO DE DINERO EN HTML(controlador de ejemplo para ver respuestas en HTML. */
+	//58.A]. Método de ejemplo que muestra una Respuesta en formato HTML.(Con datos quemados).
+	//El guión para sepapar palabras en la URL se conoce como Hyphen: "/movements-html".
+	@GetMapping(value = "/movements-html", produces = MediaType.TEXT_HTML_VALUE) //Anotación que indica que vamos a devolver la respuesta en formato HTML.
+	public String getMovimientoDineroHTML() {
+		//Se crea un “String” que genera una serie mínima de etiquetas HTML para representar un movimiento.
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html>");
+		sb.append("<body>");
+		sb.append(" <div><h1>Movimiento</h1>");
+		sb.append("	 <ul>");
+		sb.append("	  <li>Concepto: Papeleria</li>");
+		sb.append("	  <li>Monto: 30.000</li>");
+		sb.append("	 </ul>");
+		sb.append(" </div>");
+		sb.append("</body>");
+		sb.append("</html>");
+
+		return sb.toString();
 	}
 
 
-	/* Ver MovimientoDinero filtrado por Empresa */
-	@GetMapping("/{id}/enterprises")
-	public ResponseEntity<?> verMovimientosPorEmpresa(@PathVariable Integer id) {
-		return ResponseEntity.ok(movimientoDineroService.obtenerPorEmpresa(id));
+	/* VER MOVIMIENTO DE DINERO EN XML(controlador de ejemplo para ver respuestas en XML. */
+	//58.B]. Método de ejemplo que muestra una Respuesta en formato XML.(Con datos quemados).
+	@GetMapping(value = "/movements-xml", produces = MediaType.APPLICATION_XML_VALUE) //Anotación que indica que vamos a devolver la respuesta en formato XML.
+	public String getMovimientoDineroXML() {
+		//Se crea un “String” que genera una serie mínima de etiquetas XML para representar un movimiento.
+		StringBuilder sb = new StringBuilder();
+		sb.append("<xml>");
+		sb.append(" <Movimiento>");
+		sb.append("	  <Concepto>Concepto: Papeleria</Concepto>");
+		sb.append("	  <monto>Monto: 30.000</monto>");
+		sb.append(" </Movimiento>");
+		sb.append("</xml>");
+
+		return sb.toString();
 	}
 
-	//Voy para La clase 17 y para el punto [51]. aqui me paso a la rama feature/develop, para continuar trabajando con Controller
-	//Luego voy a trabajar los códigos de respuestas de los controladores REST de esta misma clase ==> [52].
-	//Despues de agregar los ResponseEntity a los métodos planos, procedere a agregar los códigos de error. ==> [53].
+	//De este apartado pasaré a configurar la URL base de la API REST ==> [59].
+
+
+
+
 
 }
+
