@@ -5,6 +5,7 @@ import edu.enterprise.spring.exceptions.ResourceNotFoundException;
 import edu.enterprise.spring.models.MovimientoDinero;
 import edu.enterprise.spring.services.MovimientoDineroService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class MovimientoDineroRestController {
 
 
 	@Autowired
+	@Lazy //[63]. Ejemplo de lazy: Este mecanismo, en oposición con el prematuro, inicializa el bean (crea una instancia de la clase “MovimientoDineroService”) sólo bajo demanda Es decir, solo cuando se ejecute el endpoint REST que hace uso del servicio
 	private MovimientoDineroService movimientoDineroService;
 
 

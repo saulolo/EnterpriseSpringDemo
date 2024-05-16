@@ -3,14 +3,16 @@ package edu.enterprise.spring.services;
 import edu.enterprise.spring.models.MovimientoDinero;
 import edu.enterprise.spring.repositories.MovimientoDineroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//[44].Implementación de los servicios de MovimientoDinero.
-@Service
+
+@Lazy //[63.A]También es necesario anotar @Lazy sobre el bean que queremos qu inicialice con retardo.
+@Service //[44].Implementación de los servicios de MovimientoDinero.
 public class MovimientoDineroService {
 
 	@Autowired
