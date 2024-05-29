@@ -54,6 +54,4 @@ public class Producto {
 	@Column(name = "categoria")
 	ProductoCategoriaEnum categoria; // Creo un Enum para las categorias de los productos. ==> [72].
 
-
-
 }
