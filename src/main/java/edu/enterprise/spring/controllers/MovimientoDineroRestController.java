@@ -1,5 +1,6 @@
 package edu.enterprise.spring.controllers;
 
+import edu.enterprise.spring.configurations.ConfigurationsParameters;
 import edu.enterprise.spring.exceptions.BadRequestException;
 import edu.enterprise.spring.exceptions.ResourceNotFoundException;
 import edu.enterprise.spring.models.MovimientoDinero;
@@ -26,6 +27,9 @@ public class MovimientoDineroRestController {
 	@Lazy //[63]. Ejemplo de lazy: Este mecanismo, en oposición con el prematuro, inicializa el bean (crea una instancia de la clase “MovimientoDineroService”) sólo bajo demanda Es decir, solo cuando se ejecute el endpoint REST que hace uso del servicio
 	private MovimientoDineroService movimientoDineroService;
 
+	@Autowired //[66]. Inyecto la clase de ConfigurationsParameters donde se setean los valores de los atributos de la clase con los valores indicados en el archivo “application.properties”.
+	private ConfigurationsParameters configurationsParameters;
+
 
 
 	/* [52]. Continuo trabajando este punto que se enfocará en los códigos de respuesta HTTP que deberán de entrear los
@@ -37,6 +41,9 @@ public class MovimientoDineroRestController {
 	/* VER MOVIMIENTO DE DINERO */
 	@GetMapping
 	public ResponseEntity<?> verMovimientos() {
+		//[67]. Ahora agrego una pequeña traza en el método verMovimientos  dentro de este mismo controlador, por el momento lo hare con un println, despues implementaré la traza con un motor log.
+		//cuando ejecute el endpoint desde POSTMAN se exhiben por consola los valores de esas claves recuperadas desde el archivo “application.properties”.
+		System.out.println("params" + configurationsParameters.toString()) ;
 		return ResponseEntity.ok(movimientoDineroService.getAllMovimientoDinero());
 	}
 	/*

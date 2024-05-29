@@ -2,6 +2,8 @@ package edu.enterprise.spring.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 /*[7].Creo el package de models, domain o entities y alli creo las clases o entidades, y como estamos
 programando para la web con spring boot debo de utilizar las anotaciones qne me provee dicho
@@ -15,10 +17,17 @@ public class Empresa { //La clase codelo que se conoce como POJO: Se trata de un
     @GeneratedValue(strategy = GenerationType.IDENTITY) //[9.B]. Asi decimos que cada empresa cuando se creé en la BD, lo haga de forma autoincremental, con Identity aunque elimines guarda el consucutivo.
     //@Column(columnDefinition = "serial") //Para que sea autoincremental por columnas de manera separada en caso de que colocara GenerationType.AUTO. (con AUTO se genera un id global)
     private int id;
+
     private String nombre;
+
     private String direccion;
+
     private String telefono;
+
     private String NIT;
+
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL) //Con esta anotación indico que la relación es de uno a muchos, porque una empresa puede tener muchos productos.
+    private List<Producto> productos;
 
 
 

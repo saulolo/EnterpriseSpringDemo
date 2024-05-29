@@ -28,10 +28,16 @@ public class MovimientoDineroService {
 
 	/* VER LISTA DE MOVIMIENTO DINERO */
 	public List<MovimientoDinero> getAllMovimientoDinero() {
-		List<MovimientoDinero> movimientosList = new ArrayList<>();
+		List<MovimientoDinero> movimientosList = new ArrayList<>(); //El método actual agrega una capa adicional de iteración y almacenamiento en una lista intermedia, lo cual no es necesari
 		movimientosList.addAll(movimientoDineroRepository.findAll()); //Otra forma de reemplaar la ieración con el metodo addAll de la coleccion de ArraysList.
 		return movimientosList;
 	}
+
+	/* VER LISTA DE MOVIMIENTO DINERO (Version 2) */
+	//o Simplemente puedo hacer este metodo asi (mas recomendable):
+	/*public List<MovimientoDinero> getAllMovimientoDinero() {
+		return movimientoDineroRepository.findAll();
+	}*/
 
 
 	/* VER MOVIMIENTO DINERO POR ID */

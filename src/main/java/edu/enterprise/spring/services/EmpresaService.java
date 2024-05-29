@@ -41,9 +41,9 @@ public class EmpresaService {
 
 
     /* VER EMPRESAS */
-    //[22].Método que me permite ver una lista de todas las empresass.
+    //[22].Método que me permite ver una lista de todas las empresas.
     public List<Empresa> getAllEmpresas() {
-        List<Empresa> empresaList = new ArrayList<>(); //Creo una variable tipo objeto de tipo lista donde se almacenaran todas las empresas que quiero ver y o hago con el método ArrayList.
+        List<Empresa> empresaList = new ArrayList<>(); //Creo una variable tipo objeto de tipo lista donde se almacenaran todas las empresas que quiero ver y lo hago con el método ArrayList.
         empresaRepository.findAll().forEach(empresa -> empresaList.add(empresa)); //llamo el objeto que hereda de Jparepository (empresaRepository) para traerme el metodo
         // que necesite, en este caso findAll que me permite ver todas las empresas.
         //El método .findAll me devuelve un iterable, por ende debo de recorrelo para poderlas ver con un foreach.
