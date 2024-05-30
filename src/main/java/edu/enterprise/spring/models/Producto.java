@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-/* [70]. CRDU de Producto con mejores practicas de programación. */
+/* [70]. CRUD de Producto con mejores practicas de programación. */
 
 //[61]. Clase producto para implementar como ejemplo la lectura de un archivo Json y no de memoria/
 //[71]. Anotaciones con lombok para mapear la clase Producto.(despues de haber agregado la dependencia de lombok en el archivo pom.xml e instalado el puggin Lombok en el marketplace).
@@ -54,4 +54,5 @@ public class Producto {
 	@Column(name = "categoria")
 	ProductoCategoriaEnum categoria; // Creo un Enum para las categorias de los productos. ==> [72].
 
+	//Creo el respositorio de Producto para poder hacer las operaciones CRUD de la clase Producto. ==> [73].
 }

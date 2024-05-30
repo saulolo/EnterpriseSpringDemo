@@ -1,4 +1,4 @@
-package edu.enterprise.spring.services;
+package edu.enterprise.spring.services.impl;
 
 import edu.enterprise.spring.models.Producto;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,7 @@ import java.util.List;
 //[69]. Crear el servicio ProductosServiceImplApiExterna para consumir la API externa.
 @Slf4j //[71]. Anotación que nos permite manejar de forma abstracta varias implementaciones de  logging como Logback, Log4j, July, etc.
 @Service
-public class ProductosServiceImplApiExterna {
+public class ProductoServiceImplApiExterna {
 
 	public List<Producto> getProductos() {
 		// Crea una instancia de RestTemplate. RestTemplate es una clase de Spring que proporciona métodos convenientes para consumir servicios web RESTful.

@@ -1,4 +1,4 @@
-package edu.enterprise.spring.services;
+package edu.enterprise.spring.services.impl;
 
 import edu.enterprise.spring.models.MovimientoDinero;
 import edu.enterprise.spring.repositories.MovimientoDineroRepository;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Lazy //[63.A]También es necesario anotar @Lazy sobre el bean que queremos qu inicialice con retardo.
 @Service //[44].Implementación de los servicios de MovimientoDinero.
-public class MovimientoDineroService {
+public class MovimientoDineroServiceImpl {
 
 	@Autowired
 	private MovimientoDineroRepository movimientoDineroRepository;

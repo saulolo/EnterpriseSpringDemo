@@ -1,4 +1,4 @@
-package edu.enterprise.spring.services;
+package edu.enterprise.spring.services.impl;
 
 import edu.enterprise.spring.models.Empleado;
 import edu.enterprise.spring.repositories.EmpleadoRepository;
@@ -17,7 +17,7 @@ import java.util.Optional;
  * guardar, actualizar, eliminar y recuperar empleados.
  */
 @Service
-public class EmpleadoService {
+public class EmpleadoServiceImpl {
 
 	@Autowired
 	private EmpleadoRepository empleadoRepository;

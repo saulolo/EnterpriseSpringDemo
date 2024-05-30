@@ -1,4 +1,4 @@
-package edu.enterprise.spring.services;
+package edu.enterprise.spring.services.impl;
 
 import edu.enterprise.spring.models.Empresa;
 import edu.enterprise.spring.repositories.EmpresaRepository;
@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-/*[17].Creo un package con el nombre de services donde irán las clases relacionadas con los
+/*[17].Creo un package con el nombre de services y dentro de esta una impl donde irán las clases relacionadas con los
 servicios de nuestro proyecto, o lo que es lo mismo, la lógica a implementar.*/
 /*Nota: Es importante aclarar que la anotación @Service registra clases en el contenedor de dependencias Spring que luego
  generará un solo objeto de la misma durante toda la sesión. Esto significa que Spring inyecta estos beans de acuerdo al
  patrón “Singleton” (un objeto solo por clase).
 */
 @Service //[18].Decoro clase con esta anotación para indicar que es una clase de tipo servicios. Estas anotaciones de clase se hacen con el fin de registar las clses em el contenedor de dependecnias de Spring.
-public class EmpresaService {
+public class EmpresaServiceImpl {
 
     /* La anotación @Autowired indica a Spring que tiene que buscar en su contenedor de inyecciones una clase que implemente
     a la interfaz que decora. Luego Spring, creará una instancia de “EmpresaRepository” y la guardará en la referencia

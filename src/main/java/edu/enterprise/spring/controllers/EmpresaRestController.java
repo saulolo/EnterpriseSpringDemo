@@ -1,7 +1,7 @@
 package edu.enterprise.spring.controllers;
 
 import edu.enterprise.spring.models.Empresa;
-import edu.enterprise.spring.services.EmpresaService;
+import edu.enterprise.spring.services.impl.EmpresaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +22,7 @@ public List<Empresa> verEmpresas()......
 public class EmpresaRestController {
 
 	@Autowired //Esta anotación me permite inyectar automáticaente la instancia de EmpresaService.
-	private EmpresaService empresaService; //[29]. Hago la inyección de el servicio de Empresa con el modificador de acceso private para encapsular y hacer el código mas seguro..
+	private EmpresaServiceImpl empresaServiceImpl; //[29]. Hago la inyección de el servicio de Empresa con el modificador de acceso private para encapsular y hacer el código mas seguro..
 
 	/* Hola Mundo RestControler */
 	//[30]. Metodo de prueba para ver como generar un saludo personalizado por el nombre que el usuario ingrese.
@@ -41,7 +41,7 @@ public class EmpresaRestController {
 	era una ardua tarea que le correspondía al desarrollador y era necesario lidiar con sofisticados mappers de JSON o XML.*/
 	@GetMapping //ruta donde retornará la lista de empresas, lo consulto en la ruta:http://localhost:8080/enterprises
 	public List<Empresa> verEmpresas() { //Deve devolver una lista por eso el método List.
-		return empresaService.getAllEmpresas();
+		return empresaServiceImpl.getAllEmpresas();
 	}
 	/* Importante: firma de los endpoints definidos llevan el nombre “enterprises” que es un sustantivo y plural.
 	Se recomienda seguir estas reglas gramaticales para la definición de API’s REST, ya que este subprotocolo está
@@ -60,7 +60,7 @@ public class EmpresaRestController {
 	petición de este servicio. */
 	@PostMapping //@PostMapping: convierte a este método Java en un endpoint REST mediante el mecanismo HTTP POST.
 	public Empresa guardarEmpresa(@RequestBody Empresa emp) { //@RequestBody: El cuerpo que esta solicitando va a llegar aqui que es de Empresa (el modelo).
-		return empresaService.saveOrUpdateEmpresa(emp);
+		return empresaServiceImpl.saveOrUpdateEmpresa(emp);
 	}
 	/*Nota: EL RequestBody lo creo como Json en el insomnia para mandarlo como un POST, estos salen
 	del modelo Empresa que cree sin el Id porque este es automatico, asi:
@@ -81,7 +81,7 @@ public class EmpresaRestController {
 	// y la firma del método debe de ser asi: (@PathVariable ("id") Integer id)
 	@GetMapping("/{id}")
 	public Empresa empresaPorId(@PathVariable Integer id) {
-		return empresaService.getEmpresaById(id);
+		return empresaServiceImpl.getEmpresaById(id);
 	}
 
 
@@ -91,12 +91,12 @@ public class EmpresaRestController {
 	@PatchMapping("/{id}") ////@PatchMapping: convierte a este método Java en un endpoint REST mediante el mecanismo HTTP PATCH.
 	public Empresa actualizacionParcialEmpresa(@PathVariable Integer id, @RequestBody Empresa empresa) { //@PathVariable: que indica que este parámetro java normal se transformará en un parámetro web de tipo Path Variable, es decir, un parámetro de tipo web que estará contenido en la URL del endpoint.
 		//@RequestBody Empresa emp: Porque tengo que consultar la empresa que traigo del body para actualizar.
-		Empresa emp = empresaService.getEmpresaById(id); //Creo una variable emp donde voy a almacenar la empresa que me traigo por Id.
+		Empresa emp = empresaServiceImpl.getEmpresaById(id); //Creo una variable emp donde voy a almacenar la empresa que me traigo por Id.
 		emp.setNombre(empresa.getNombre()); //Seteo los campos que necesito actualizar
 		emp.setDireccion(empresa.getDireccion());
 		emp.setTelefono(empresa.getTelefono());
 		emp.setNIT(empresa.getNIT());
-		return empresaService.saveOrUpdateEmpresa(emp) ; //Guardo los campos actualizados en la empresa.
+		return empresaServiceImpl.saveOrUpdateEmpresa(emp) ; //Guardo los campos actualizados en la empresa.
 	}
 
 
@@ -104,14 +104,14 @@ public class EmpresaRestController {
 	//[35]. Método para ver actualizar una empresa por completo.
 	@PutMapping("/{id}") //@PutMapping: convierte a este método Java en un endpoint REST mediante el mecanismo HTTP PUT.
 	public Empresa actualizarEmpresa(@PathVariable Integer id, @RequestBody Empresa empresa) {
-		Empresa emp = empresaService.getEmpresaById(id); //Obtengo la empresa existente por su id.
+		Empresa emp = empresaServiceImpl.getEmpresaById(id); //Obtengo la empresa existente por su id.
 		if (emp != null) { //Verificar si la empresa existe.
 			// Actualizar todos los campos de la empresa con los valores proporcionados en el cuerpo de la solicitud
 			emp.setNombre(empresa.getNombre());
 			emp.setDireccion(empresa.getDireccion());
 			emp.setTelefono(empresa.getTelefono());
 			emp.setNIT(empresa.getNIT());
-			return empresaService.saveOrUpdateEmpresa(emp); //Guardar y retornar la empresa actualizada
+			return empresaServiceImpl.saveOrUpdateEmpresa(emp); //Guardar y retornar la empresa actualizada
 		} else {
 			// Si la empresa no existe, retornar null o lanzar una excepción, dependiendo del requerimiento
 			return null;
@@ -129,7 +129,7 @@ public class EmpresaRestController {
 	//[36]. Método para ver eliminar una empresa pasandole su Id.
 	@DeleteMapping("/{id}") //@DeleteMapping: convierte a este método Java en un endpoint REST mediante el mecanismo HTTP DELETE.
 	public String eliminarEmpresa(@PathVariable Integer id) {
-		boolean respuesta = empresaService.deleteEmpresa(id); //Utilizo el metodo deleteEmpresa del service
+		boolean respuesta = empresaServiceImpl.deleteEmpresa(id); //Utilizo el metodo deleteEmpresa del service
 		if (respuesta) {
 			return "Se eliminó la empresa con ID: " + id;
 		}

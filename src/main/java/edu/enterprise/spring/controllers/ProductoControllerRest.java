@@ -2,8 +2,11 @@ package edu.enterprise.spring.controllers;
 
 import edu.enterprise.spring.enums.ProductoCategoriaEnum;
 import edu.enterprise.spring.models.Producto;
+import edu.enterprise.spring.services.IProductoService;
+import jakarta.validation.Valid;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +15,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//[62].RestControllers de Productos
+//[62][76].RestControllers de Productos
 @RestController
 @RequestMapping("/products")
 public class ProductoControllerRest {
 
+
+	private final IProductoService iProductoService;
+
+	public ProductoControllerRest(IProductoService iProductoService) {
+		this.iProductoService = iProductoService;
+	}
 
 	/* VER PRODUCTOS JSON */
 	@GetMapping(value = "/productos-json", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,5 +58,34 @@ public class ProductoControllerRest {
 	simular el consumo de una API externa. ==> [69]. */
 
 
+	/**
+	 * Crear un producto.
+	 * @return Producto creado.
+	 * @throws Exception Excepción en caso de error al crear el producto.
+	 */
+	@PostMapping("/crear")
+	public ResponseEntity<Producto> crearProducto(@Valid @RequestBody Producto producto) {
+		try {
+			return new ResponseEntity<>(iProductoService.crearProducto(producto), HttpStatus.CREATED);
+			//ResponeEntity es una clase de Spring que representa toda la respuesta HTTP: código de estado, encabezados y cuerpo.
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+
+	/**
+	 * Ver todos los productos.
+	 * @return Lista de productos.
+	 * @throws Exception Excepción en caso de error al obtener los productos.
+	 */
+	@GetMapping("/ver")
+	public ResponseEntity<List<Producto>> verProductos() {
+		try {
+			return new ResponseEntity<>(iProductoService.verProductos(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
 

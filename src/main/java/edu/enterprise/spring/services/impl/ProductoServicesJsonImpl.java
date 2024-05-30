@@ -1,4 +1,4 @@
-package edu.enterprise.spring.services;
+package edu.enterprise.spring.services.impl;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -20,7 +20,7 @@ Este mecanismo es bastante eficaz para aquellos escenarios donde nuestro sistema
 misma API.*/
 @Primary //Esta anotación la pongo en caso de que tengamos dos servicios con el mismo nombre y a la hora de exponerlo Spring no sepa caul de los dos tomar primero.
 @Service
-public class ProductosServicesJsonImpl {
+public class ProductoServicesJsonImpl {
 
 
 	/*Este código es el que carga el archivo JSON de productos desde el classpath del  proyecto y lo deserializa a una
