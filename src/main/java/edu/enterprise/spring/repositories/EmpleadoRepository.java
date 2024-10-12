@@ -16,7 +16,7 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Integer> {
 	relación desde el principio con los modelos, Spring ya lo sabe, entonces esta forma la debemos de evitar.
 	Esta por defecto y con la ayuda del IDE me establece la query por JPQL con la anotación @Query.
 	*/
-	//Query directo de JPQL
+	//Query directo de JPQL (JPA Wildcards)
 	@Query("SELECT e FROM Empleado e WHERE e.empresa.id = ?1") //?1: Hace referencia a la posición del parametro que recibe el método, en este caso recibi un parametro.
 	ArrayList<Empleado> findByEmpresa(Integer id); //Por defecto es un método publico y abstracto.
 

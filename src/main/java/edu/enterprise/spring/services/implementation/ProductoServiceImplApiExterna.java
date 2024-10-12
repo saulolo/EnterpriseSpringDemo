@@ -1,4 +1,4 @@
-package edu.enterprise.spring.services.impl;
+package edu.enterprise.spring.services.implementation;
 
 import edu.enterprise.spring.models.Producto;
 import lombok.extern.slf4j.Slf4j;

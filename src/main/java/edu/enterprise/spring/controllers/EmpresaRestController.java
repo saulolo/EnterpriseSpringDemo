@@ -1,7 +1,7 @@
 package edu.enterprise.spring.controllers;
 
 import edu.enterprise.spring.models.Empresa;
-import edu.enterprise.spring.services.impl.EmpresaServiceImpl;
+import edu.enterprise.spring.services.implementation.EmpresaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

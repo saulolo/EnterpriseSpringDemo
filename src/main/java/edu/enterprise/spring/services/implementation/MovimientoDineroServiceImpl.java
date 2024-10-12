@@ -1,4 +1,4 @@
-package edu.enterprise.spring.services.impl;
+package edu.enterprise.spring.services.implementation;
 
 import edu.enterprise.spring.models.MovimientoDinero;
 import edu.enterprise.spring.repositories.MovimientoDineroRepository;

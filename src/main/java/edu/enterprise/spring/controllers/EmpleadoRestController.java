@@ -1,7 +1,7 @@
 package edu.enterprise.spring.controllers;
 
 import edu.enterprise.spring.models.Empleado;
-import edu.enterprise.spring.services.impl.EmpleadoServiceImpl;
+import edu.enterprise.spring.services.implementation.EmpleadoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

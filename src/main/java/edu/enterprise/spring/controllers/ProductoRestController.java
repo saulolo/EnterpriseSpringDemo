@@ -2,7 +2,7 @@ package edu.enterprise.spring.controllers;
 
 import edu.enterprise.spring.enums.ProductoCategoriaEnum;
 import edu.enterprise.spring.models.Producto;
-import edu.enterprise.spring.services.IProductoService;
+import edu.enterprise.spring.services.interfaces.IProductoService;
 import jakarta.validation.Valid;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -18,12 +18,12 @@ import java.util.List;
 //[62][76].RestControllers de Productos
 @RestController
 @RequestMapping("/products")
-public class ProductoControllerRest {
+public class ProductoRestController {
 
 
 	private final IProductoService iProductoService;
 
-	public ProductoControllerRest(IProductoService iProductoService) {
+	public ProductoRestController(IProductoService iProductoService) {
 		this.iProductoService = iProductoService;
 	}
 

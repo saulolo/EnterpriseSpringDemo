@@ -1,4 +1,4 @@
-package edu.enterprise.spring.services;
+package edu.enterprise.spring.services.interfaces;
 
 import edu.enterprise.spring.models.Producto;
 

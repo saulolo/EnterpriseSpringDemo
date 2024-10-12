@@ -3,7 +3,7 @@ package edu.enterprise.spring.controllers;
 import edu.enterprise.spring.configurations.ConfigurationsParameters;
 import edu.enterprise.spring.exceptions.ResourceNotFoundException;
 import edu.enterprise.spring.models.MovimientoDinero;
-import edu.enterprise.spring.services.impl.MovimientoDineroServiceImpl;
+import edu.enterprise.spring.services.implementation.MovimientoDineroServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;

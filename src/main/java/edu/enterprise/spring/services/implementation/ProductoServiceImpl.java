@@ -1,8 +1,8 @@
-package edu.enterprise.spring.services.impl;
+package edu.enterprise.spring.services.implementation;
 
 import edu.enterprise.spring.models.Producto;
 import edu.enterprise.spring.repositories.ProductoRepository;
-import edu.enterprise.spring.services.IProductoService;
+import edu.enterprise.spring.services.interfaces.IProductoService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
