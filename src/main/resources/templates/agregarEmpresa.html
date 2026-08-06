@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agregar Nueva Empresas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .container-fluid {
+            padding-top: 70px;
+            padding-bottom: 70px;
+        }
+
+        .bg-1 {
+            background-color: #1abc9c; /* Green */
+            color: #ffffff;
+        }
+
+        .bg-3 {
+            background-color: #ffffff; /* White */
+            color: #555555;
+        }
+
+        a {
+            color: white;
+        }
+
+        a:hover {
+            color: black;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- [26.Ctrll.L].Formulario del Botón Agregar Nueva Empresa -->
+
+<!-- Personalizando El contenedor del Titulo -->
+<div class="container-fluid bg-1 text-center">
+    <h1>Agregue aqui los datos de Empresa</h1>
+</div>
+<br>
+
+<!--Formulario-->
+<!--th:action="@{/GuardarEmpresa}": sera la acción principal que ejecutará el formulario y direccionara a el servicio GuardarEmpresa -->
+<!--th:object="${emp}": le digo que espere ese objeto que viene desde el controller -->
+<!--method="post": para que me guarde ese servicio.-->
+<form class="form-horizontal" th:action="@{/GuardarEmpresa}" th:object="${emp}" method="post">
+
+    <!--Campo Nombre-->
+    <!--Divido el espacio en 12 columnas y las reparto en los label e input-->
+    <div class="form-group col-md-12">
+        <label class="col-md-2" for="nombre">Nombre de la empresa:</label>
+        <div class="col-md-6">
+            <!--th:field="*{nombre}": asi le digo al formulario que lo que persona ingrese en este input va al atributo nombre de la clase Empresa que tiene el objeto emp-->
+            <input type="text" th:field="*{nombre}" class="form-control" id="nombre"
+                   placeholder="Ingrese el nombre de la empresa." required="required">
+        </div>
+    </div>
+
+    <!--Campo Direción-->
+    <div class="form-group col-md-12">
+        <label class="col-md-2" for="direccion">Dirección de la empresa:</label>
+        <div class="col-md-6">
+            <input type="text" th:field="*{direccion}" class="form-control" id="direccion"
+                   placeholder="Ingrese la dirección." required="required">
+        </div>
+    </div>
+
+    <!--Campo Teléfono-->
+    <div class="form-group col-md-12">
+        <label class="col-md-2" for="telefono">Teléfono de la empresa:</label>
+        <div class="col-md-6">
+            <input type="text" th:field="*{telefono}" class="form-control" id="telefono"
+                   placeholder="Ingrese el teléfono." required="required">
+        </div>
+    </div>
+
+    <!--Campo Nit-->
+    <div class="form-group col-md-12">
+        <label class="col-md-2" for="NIT">NIT o RUT de la empresa:</label>
+        <div class="col-md-6">
+            <input type="text" th:field="*{NIT}" class="form-control" id="NIT" placeholder="Ingrese el Nit."
+                   required="required">
+        </div>
+    </div>
+
+    <!--Botón Crear empresa: para Enviar y ejecutar la acción-->
+    <div class="form-group col-md-12">
+        <div class="col-md-2">
+            <!--No se tiene que poner la etiqueta th porque como esta dentro de un form, él ya sabe que pertenece a esta th-->
+            <button class="btn btn-success">Crear Empresa</button>
+            <!-- La funcionalidad de este servicio hay que crearla en el controlador.-->
+        </div>
+    </div>
+
+</form>
+
+<br>
+
+<!--Botón Atras-->
+<!--Debe de ir por fuera del formulario para no confundir al form con el boton enviar-->
+<div class="form-group col-md-12">
+    <div class="col-md-2">
+        <!--href="javascript: history.go(-1): Este boton va a redireecionar a traves de un servicio de javascript al historial de navegación -1 atras-->
+        <!--class="btn btn-info": clase predefinida de bootstrap y su role="button": con esto indico que es de tipo botón.-->
+        <a href="javascript: history.go(-1)" class="btn btn-info" role="button">Atras</a>
+    </div>
+</div>
+
+
+</body>
+</html>
